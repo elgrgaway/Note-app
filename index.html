@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="style.scss" /> -->
+
+    <link rel="stylesheet" href="styles/style.css" />
+    <!-- <style>
+      .container .menu .notes-link {
+        border-left: solid 0.3rem var(--color-orange);
+      }
+
+      .container .menu .add-notes-link {
+        color: var(--color-gray);
+      }
+    </style> -->
+    <title>Note App</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="menu">
+        <div class="menu-heading">
+          <button class="humburger-menu-button">
+            <!-- <i class="fa-thin fa-bars-staggered"></i> -->
+            <i class="fa-solid fa-bars-staggered humburger-menu-icon"></i>
+          </button>
+          <h1>Algergawi-Notes</h1>
+          <button class="search-mobile">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          </button>
+        </div>
+        <form class="menu__search">
+          <input
+            type="text"
+            name="search"
+            id="search"
+            placeholder="Search"
+            class="search-input"
+          />
+          <img src="images/Frame.png" class="search-icon" alt="" />
+        </form>
+        <div class="humburger-menu">
+          <i class="fa-solid fa-x cross" role="button" tabindex="0"></i>
+          <a class="notes-link" href="index.html">Notes</a>
+          <a class="add-notes-link" href="#">Add Notes</a>
+        </div>
+      </div>
+      <div class="all-notes">
+        <div class="all-notes__content">
+          <h2 class="head-notes">PINNED</h2>
+          <ul class="notes-list pinned-list"></ul>
+          <h2 class="head-notes normal">Notes</h2>
+          <ul class="notes-list normal-list"></ul>
+        </div>
+        <button class="arrow-button">
+          <img src="images/arrow-icon.png" alt="arrow-button" />
+        </button>
+      </div>
+      <div class="display-note">
+        <i
+          class="fa-solid fa-x display-note__cross"
+          role="button"
+          tabindex="0"
+        ></i>
+        <h3>ADD NOTES AND CLICK ON IT TO DISPLAY IT</h3>
+        <span> <span class="note-author"></span></span>
+        <p></p>
+      </div>
+      <button class="plus-button">
+        <img type="module" src="images/Vector.png" alt="plus-button" />
+      </button>
+      <div class="add-note-container">
+        <h2>Add Note</h2>
+        <form>
+          <label for="title">Title*</label>
+          <input type="text" name="title" id="title" required />
+          <label for="author">Author*</label>
+          <input type="text" name="author" id="author" required />
+          <label for="textarea">Your Notes*</label>
+          <textarea name="textarea" id="textarea" required></textarea>
+          <div class="submit-buttons">
+            <button class="add-normal-note" type="submit">Add Note</button>
+            <button class="add-pinned-note" type="submit">
+              Add pinned note
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script
+      src="https://kit.fontawesome.com/3bd3133027.js"
+      crossorigin="anonymous"
+    ></script>
+    <script type="module" src="index.js"></script>
+  </body>
+</html>

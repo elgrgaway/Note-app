@@ -32,33 +32,7 @@ const fetchData = (key) => {
   const data = localStorage.getItem(key);
   return data ? JSON.parse(data) : [];
 };
-// const deleteHandler = (i) => {
-//   let normalnotes = fetchData("notes");
-//   let pinnedNotes = fetchData("notes-pinned");
-//   let data = normalnotes.concat(pinnedNotes);
-//   // console.log(data);
-//   // console.log(i);
-//   data.splice(i, 1);
-//   saveToDB("notes", normalnotes);
-//   initDataOnStartup();
-//   initEventListeners();
-// };
-const deleteNormal = (i) => {
-  let normalNotes = fetchData("notes");
-  normalNotes.splice(i, 1);
-  saveToDB("notes", normalNotes);
-  location.reload();
-  initDataOnStartup();
-  initEventListeners();
-};
-const deletePinned = (i) => {
-  let pinnedNotes = fetchData("notes-pinned");
-  pinnedNotes.splice(i, 1);
-  saveToDB("notes-pinned", pinnedNotes);
-  location.reload();
-  initDataOnStartup();
-  initEventListeners();
-};
+
 const deleteNote = (i, localStorage) => {
   let notes = fetchData(localStorage);
   notes.splice(i, 1);

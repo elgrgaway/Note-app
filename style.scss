@@ -382,10 +382,7 @@ a {
       padding-top: 2.1rem;
       transition: all 0.3s ease-in-out;
       padding-top: 0;
-      .menu-heading {
-        background-color: white;
-        padding-top: 2.1rem;
-      }
+
       .menu__search {
         visibility: hidden;
         opacity: 0;
@@ -398,6 +395,7 @@ a {
       }
       .menu-heading {
         display: flex;
+        padding-top: 2.1rem;
         align-items: center;
         justify-content: space-between;
         .humburger-menu-button {
@@ -421,7 +419,6 @@ a {
     }
     .search--isActive {
       background-color: var(--background-color);
-      // transition: all 0.3s ease-in-out;
 
       .search-icon:before {
         content: "\58";
@@ -429,7 +426,6 @@ a {
         transition: all 0.3s ease-in-out;
       }
       .menu__search {
-        // transition: all 0.3s ease-in-out;
         margin-top: 3.3rem;
         margin-bottom: 2rem;
         visibility: visible;
@@ -509,7 +505,7 @@ a {
     transform: translateX(21.2rem);
     transition: all 0.3s ease-in-out;
     height: 100vh;
-    width: 100%;
+    // width: 100%;
     // overflow-y: hid;
     // overflow-x: hidden;
 

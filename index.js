@@ -86,8 +86,8 @@ const renderNotes = (notes, listElement) => {
     // Check if title and textarea are not empty before rendering
     if (note.title.trim() !== "" && note.note.trim() !== "") {
       noteList += `
-        <li class="note-box">
-          <h3 class="note-box__head">${note.title}</h3>
+        <li role="listitem" class="note-box">
+          <h1 class="note-box__head" style="font-size:2.7rem">${note.title}</h1>
           <p class="note-box__para">${note.note}</p>
           <div>
             <span class="note-box-date">${formattedCurrentDate}<span> / by ${note.arthor}</span></span>

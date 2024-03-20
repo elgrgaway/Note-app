@@ -395,7 +395,13 @@ a {
       }
 
       .humburger-menu {
-        display: none;
+        opacity: 0;
+        visibility: visible;
+        transform: translateX(-21.2rem);
+        margin-top: 8.9rem;
+        top: 0;
+        position: absolute;
+        transition: 0.3s all ease-in-out;
       }
       .menu-heading {
         display: flex;
@@ -506,21 +512,25 @@ a {
     }
   }
   .menu--isActive {
-    transform: translateX(21.2rem);
+    // transform: translateX(21.2rem);
     transition: all 0.3s ease-in-out;
     height: 100vh;
     // width: 100%;
     // overflow-y: hid;
     // overflow-x: hidden;
 
-    // position: relative;
+    position: relative;
     // position: relative;
     .menu .humburger-menu {
-      transform: translateX(-21.2rem);
+      position: absolute;
+      transform: translateX(0);
       width: fit-content;
-      margin-top: -7.9rem;
+      // top: 0;
+      // margin-top: 8.9rem;
       height: 100%;
-      display: block;
+      opacity: 1;
+      visibility: visible;
+      transition: 0.3s all ease-out;
     }
     .humburger-menu::after {
       content: "";

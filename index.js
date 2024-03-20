@@ -22,56 +22,32 @@ const displayNoteP = document.querySelector(".display-note p");
 const displayNoteCross = document.querySelector(".display-note__cross");
 const noteBoxElements = () => document.querySelectorAll(".note-box");
 const liHeadingElement = () => document.querySelectorAll(".note-box__head");
-const deleteButtons = () => document.querySelectorAll(".note-box-delete");
+const deleteButtonsNormal = () =>
+  document.querySelectorAll(".normal-list .note-box-delete");
+const deleteButtonsPinned = () =>
+  document.querySelectorAll(".pinned-list .note-box-delete");
 let search_term = "";
 
-// console.log(formattedCurrentDate);
-searchButton.addEventListener("click", () => {
-  menu.classList.toggle("search--isActive");
-
-  container.classList.remove("second-page");
-});
-menuButton.addEventListener("click", () => {
-  container.classList.toggle("menu--isActive");
-});
-crossButton.addEventListener("click", () => {
-  container.classList.remove("menu--isActive");
-});
-notesLink.addEventListener("click", () => {
-  container.classList.remove("second-page");
-  container.classList.remove("all-notes-slide");
-});
-addNotesLink.addEventListener("click", () => {
-  container.classList.add("second-page");
-  container.classList.remove("all-notes-slide");
-});
-plusButton.addEventListener("click", () => {
-  container.classList.add("second-page");
-  container.classList.remove("all-notes-slide");
-});
-
-arrowButton.addEventListener("click", () => {
-  container.classList.toggle("all-notes-slide");
-});
-
-displayNoteCross.addEventListener("click", () => {
-  container.classList.remove("display-notes-on");
-});
 const fetchData = (key) => {
   const data = localStorage.getItem(key);
   return data ? JSON.parse(data) : [];
 };
-const deleteHandler = (note, i) => {
-  // const normalNotes = fetchData("notes");
-  // const pinnedNotes = fetchData("notes-pinned");
-  // let data = normalNotes.concat(pinnedNotes);
-  // normalNotes.splice(i - pinnedNotes.length, 1);
-  const key = note.pinned ? "notes-pinned" : "notes";
-  let notes = fetchData(key);
-  notes.splice(i, 1); // Remove the specific note
-  saveToDB(key, notes);
-  initDataOnStartup();
+
+const deleteNormal = (i) => {
+  let normalNotes = fetchData("notes");
+  normalNotes.splice(i, 1);
+  saveToDB("notes", normalNotes);
   location.reload();
+  initDataOnStartup();
+  initEventListeners();
+};
+const deletePinned = (i) => {
+  let pinnedNotes = fetchData("notes-pinned");
+  pinnedNotes.splice(i, 1);
+  saveToDB("notes-pinned", pinnedNotes);
+  location.reload();
+  initDataOnStartup();
+  initEventListeners();
 };
 
 const renderNotes = (notes, listElement) => {
@@ -83,11 +59,10 @@ const renderNotes = (notes, listElement) => {
     year: "numeric", // Full year (e.g., "2021")
   });
   notes.forEach((note) => {
-    // Check if title and textarea are not empty before rendering
     if (note.title.trim() !== "" && note.note.trim() !== "") {
       noteList += `
-        <li role="listitem" class="note-box">
-          <h1 class="note-box__head" style="font-size:2.7rem">${note.title}</h1>
+        <li class="note-box">
+          <h3 class="note-box__head">${note.title}</h3>
           <p class="note-box__para">${note.note}</p>
           <div>
             <span class="note-box-date">${formattedCurrentDate}<span> / by ${note.arthor}</span></span>
@@ -115,7 +90,9 @@ const addNote = (e) => {
       day: "numeric", // Numeric day of the month (e.g., "8")
       year: "numeric", // Full year (e.g., "2021")
     }),
+    pinned: false,
   };
+
   if (!notes.title) {
     titleInputElement.setAttribute("id", "border");
     return;
@@ -135,11 +112,13 @@ const addNote = (e) => {
   } else {
     textareaInputElement.removeAttribute("id");
   }
+
   let allNotes = fetchData("notes") || [];
   allNotes.push(notes);
   saveToDB("notes", allNotes);
   renderNotes(allNotes, normalListElement);
-  initDataOnStartup();
+  // initEventListeners();
+  // initDataOnStartup();
 };
 
 const addPinnedNote = (e) => {
@@ -154,6 +133,7 @@ const addPinnedNote = (e) => {
       day: "numeric", // Numeric day of the month (e.g., "8")
       year: "numeric", // Full year (e.g., "2021")
     }),
+    pinned: true,
   };
   if (!notes.title) {
     titleInputElement.setAttribute("id", "border");
@@ -179,13 +159,12 @@ const addPinnedNote = (e) => {
   allNotes.push(notes);
   saveToDB("notes-pinned", allNotes);
   renderNotes(allNotes, pinnedListElement);
-  initDataOnStartup();
+  // initEventListeners();
+
+  // initDataOnStartup();
 };
 const showList = () => {
-  const normalNotes = fetchData("notes");
-  const pinnedNotes = fetchData("notes-pinned");
-  let data = normalNotes.concat(pinnedNotes);
-
+  let data = fetchData("notes");
   const final = data.filter((item) => {
     return item.title.toLowerCase().includes(search_term);
   });
@@ -211,14 +190,6 @@ const showList = () => {
   });
 };
 
-normalSubmit.addEventListener("click", addNote);
-pinnedSubmit.addEventListener("click", addPinnedNote);
-
-searchInputElement.addEventListener("input", (e) => {
-  search_term = e.target.value.toLowerCase();
-  showList();
-});
-
 const saveToDB = (key, value) => {
   localStorage.setItem(key, JSON.stringify(value));
 };
@@ -228,31 +199,65 @@ const initDataOnStartup = () => {
 };
 initDataOnStartup();
 
-// deleteButtons().forEach((button, index) => {
-//   button.addEventListener("click", (i) => deleteHandler(index));
-// });
-// deleteButtons().forEach((button, index) => {
-//   button.addEventListener("click", () => deleteHandler(index));
-// });
+const initEventListeners = () => {
+  searchButton.addEventListener("click", () => {
+    menu.classList.toggle("search--isActive");
 
-noteBoxElements().forEach((note) => {
-  note.addEventListener("click", () => {
-    displayNoteH3.textContent = note.children[0].textContent;
-    displayNoteSpan.textContent = note.children[2].children[0].textContent;
-    displayNoteP.textContent = note.children[1].textContent;
+    container.classList.remove("second-page");
+  });
+  menuButton.addEventListener("click", () => {
+    container.classList.toggle("menu--isActive");
+  });
+  crossButton.addEventListener("click", () => {
+    container.classList.remove("menu--isActive");
+  });
+  notesLink.addEventListener("click", () => {
+    container.classList.remove("second-page");
+    container.classList.remove("all-notes-slide");
+  });
+  addNotesLink.addEventListener("click", () => {
+    container.classList.add("second-page");
+    container.classList.remove("all-notes-slide");
+  });
+  plusButton.addEventListener("click", () => {
+    container.classList.add("second-page");
+    container.classList.remove("all-notes-slide");
+  });
+
+  arrowButton.addEventListener("click", () => {
+    container.classList.toggle("all-notes-slide");
+  });
+
+  displayNoteCross.addEventListener("click", () => {
+    container.classList.remove("display-notes-on");
+  });
+
+  searchInputElement.addEventListener("input", (e) => {
+    search_term = e.target.value.toLowerCase();
+    showList();
+    initEventListeners();
+  });
+  noteBoxElements().forEach((note) => {
+    note.addEventListener("click", () => {
+      displayNoteH3.textContent = note.children[0].textContent;
+      displayNoteSpan.textContent = note.children[2].children[0].textContent;
+      displayNoteP.textContent = note.children[1].textContent;
+    });
     note.children[0].addEventListener("click", () => {
       container.classList.add("display-notes-on");
     });
   });
-});
-deleteButtons().forEach((button, index) => {
-  button.addEventListener("click", () => {
-    const listItem = button.closest(".note-box");
-    const note = {
-      title: listItem.querySelector(".note-box__head").textContent,
-      note: listItem.querySelector(".note-box__para").textContent,
-      pinned: listItem.parentElement.classList.contains("pinned-list"),
-    };
-    deleteHandler(note, index);
+  deleteButtonsNormal().forEach((button, index) => {
+    button.addEventListener("click", () => {
+      deleteNormal(index);
+    });
   });
-});
+  deleteButtonsPinned().forEach((button, index) => {
+    button.addEventListener("click", () => {
+      deletePinned(index);
+    });
+  });
+};
+initEventListeners();
+normalSubmit.addEventListener("click", addNote);
+pinnedSubmit.addEventListener("click", addPinnedNote);
